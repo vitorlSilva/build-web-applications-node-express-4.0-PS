@@ -7,25 +7,33 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(morgan("combined"));
+const nav = [
+  { link: "/books", title: "Book" },
+  { link: "/authors", title: "Author" },
+];
+
+app.use(morgan("tiny"));
 app.use(express.static(path.join(__dirname, "/public/")));
 app.use(
   "/css",
-  express.static(path.join(__dirname, "/node_modules/bootstrap/dist/css"))
+  express.static(path.join(__dirname, "/node_modules/boostrap/dist/css"))
 );
 app.use(
   "/js",
-  express.static(path.join(__dirname, "/node_modules/bootstrap/dist/js"))
+  express.static(path.join(__dirname, "/node_modules/boostrap/dist/js"))
 );
 app.use(
   "/js",
   express.static(path.join(__dirname, "/node_modules/jquery/dist"))
 );
-app.set("views", path.join(__dirname, "src", "views"));
+app.set("views", "./src/views");
 app.set("view engine", "ejs");
 
-app.get("/", (req, res) => {
-  res.render("index", { list: ["a", "b"], title: "Library" });
+app.get("/", function (req, res) {
+  res.render("index", {
+    nav,
+    title: "Libray",
+  });
 });
 
 app.listen(port, () => {
