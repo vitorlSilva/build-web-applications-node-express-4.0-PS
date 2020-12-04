@@ -7,11 +7,6 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
 
-const nav = [
-  { link: "/books", title: "Book" },
-  { link: "/authors", title: "Author" },
-];
-
 app.use(morgan("tiny"));
 app.use(express.static(path.join(__dirname, "/public/")));
 app.use(
@@ -29,9 +24,19 @@ app.use(
 app.set("views", "./src/views");
 app.set("view engine", "ejs");
 
+const nav = [
+  { link: "/books", title: "Book" },
+  { link: "/authors", title: "Author" },
+];
+const bookRouter = require("./src/routes/bookRoutes")(nav);
+
+app.use("/books", bookRouter);
 app.get("/", function (req, res) {
   res.render("index", {
-    nav,
+    nav: [
+      { link: "/books", title: "Book" },
+      { link: "/authors", title: "Author" },
+    ],
     title: "Libray",
   });
 });
